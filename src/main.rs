@@ -1,3 +1,4 @@
 fn main() {
-    println!("Hello, world!");
+    // スクリーンクリア
+    print!("{}[2J", 27 as char);
 }
