@@ -17,8 +17,11 @@ fn main() {
   write!(stdout, "{}", cursor::Goto(1, 1)).unwrap();
 
   write!(stdout, "■").unwrap();
+  write!(stdout, "{}", cursor::Goto(2, 2)).unwrap();
   write!(stdout, "□").unwrap();
+  write!(stdout, "{}", cursor::Goto(3, 3)).unwrap();
   write!(stdout, "■").unwrap();
+  write!(stdout, "{}", cursor::Goto(4, 4)).unwrap();
   write!(stdout, "□").unwrap();
 
   stdout.flush().unwrap();
