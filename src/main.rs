@@ -14,15 +14,16 @@ fn main() {
   let mut stdout = stdout.into_raw_mode().unwrap();
 
   write!(stdout, "{}", clear::All).unwrap();
-  write!(stdout, "{}", cursor::Goto(1, 1)).unwrap();
 
-  write!(stdout, "■").unwrap();
-  write!(stdout, "{}", cursor::Goto(2, 2)).unwrap();
-  write!(stdout, "□").unwrap();
-  write!(stdout, "{}", cursor::Goto(3, 3)).unwrap();
-  write!(stdout, "■").unwrap();
-  write!(stdout, "{}", cursor::Goto(4, 4)).unwrap();
-  write!(stdout, "□").unwrap();
+  let width = 8;
+  let height = 8;
+
+  for h in 1..=height {
+    for w in 1..=width {
+      write!(stdout, "{}", cursor::Goto(w, h)).unwrap();
+      write!(stdout, "■").unwrap();
+    }
+  }
 
   stdout.flush().unwrap();
 
