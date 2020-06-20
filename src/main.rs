@@ -15,14 +15,25 @@ fn main() {
 
   write!(stdout, "{}", clear::All).unwrap();
 
-  let width = 8;
-  let height = 8;
+  let width: u16 = 16;
+  let height: u16 = 16;
+  let size = width * height;
+  let vec = vec!["■ "; size as usize];
+  let mut x: u16;
+  let mut y: u16;
 
-  for h in 1..=height {
-    for w in 1..=width {
-      write!(stdout, "{}", cursor::Goto(w, h)).unwrap();
-      write!(stdout, "■").unwrap();
+  // cell: 細胞
+  for (i, cell) in (0_u16..).zip(vec.iter()) {
+    x = (i % width) + 1;
+    y = (i / height) + 1;
+
+    let mut print = cell;
+    if (x % 2) == 0 {
+      print = &"□";
     }
+
+    write!(stdout, "{}", cursor::Goto(x, y)).unwrap();
+    write!(stdout, "{}", print).unwrap();
   }
 
   stdout.flush().unwrap();
