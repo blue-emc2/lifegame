@@ -18,32 +18,45 @@ fn main() {
   let width: u16 = 16;
   let height: u16 = 16;
   let size = width * height;
-  let vec = vec!["■ "; size as usize];
+  let vec = vec!["■"; size as usize];
   let mut x: u16;
   let mut y: u16;
 
+  let mut stdin = stdin().keys();
+
+  // game init
   // cell: 細胞
   for (i, cell) in (0_u16..).zip(vec.iter()) {
     x = (i % width) + 1;
     y = (i / height) + 1;
 
-    let mut print = cell;
-    if (x % 2) == 0 {
-      print = &"□";
-    }
-
     write!(stdout, "{}", cursor::Goto(x, y)).unwrap();
-    write!(stdout, "{}", print).unwrap();
+    write!(stdout, "{}", cell).unwrap();
   }
 
   stdout.flush().unwrap();
 
-  let stdin = stdin();
+  // game loop
+  loop {
+    // cell: 細胞
+    for (i, cell) in (0_u16..).zip(vec.iter()) {
+      x = (i % width) + 1;
+      y = (i / height) + 1;
 
-  for evt in stdin.events() {
-    let e = evt.unwrap();
-    match e {
-      Event::Key(Key::Char('q')) => break,
+      let mut print = cell;
+      if (x % 2) == 0 {
+        print = &"□";
+      }
+
+      write!(stdout, "{}", cursor::Goto(x, y)).unwrap();
+      write!(stdout, "{}", print).unwrap();
+    }
+
+    stdout.flush().unwrap();
+
+    let key = stdin.next().unwrap().unwrap();
+    match key {
+      Key::Char('q') => return,
       _ => {}
     }
   }
