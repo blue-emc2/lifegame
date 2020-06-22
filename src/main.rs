@@ -1,11 +1,11 @@
 extern crate termion;
 
-use termion::event::Key;
-use termion::input::TermRead;
+use std::io::Read;
+use termion::async_stdin;
 use termion::raw::IntoRawMode;
 use termion::{clear, cursor};
 
-use std::io::{stdin, stdout, Write};
+use std::io::{stdout, Write};
 
 use rand::Rng;
 
@@ -14,6 +14,7 @@ fn main() {
   let stdout = stdout();
   // We go to raw mode to make the control over the terminal more fine-grained.
   let mut stdout = stdout.into_raw_mode().unwrap();
+  let mut stdin = async_stdin().bytes();
 
   write!(stdout, "{}", clear::All).unwrap();
 
@@ -23,8 +24,6 @@ fn main() {
   let vec = vec!["□"; size as usize];
   let mut x: u16;
   let mut y: u16;
-
-  let mut stdin = stdin().keys();
 
   // game init
   // cell: 細胞
@@ -59,8 +58,8 @@ fn main() {
 
     stdout.flush().unwrap();
 
-    let key = stdin.next().unwrap().unwrap();
-    if key == Key::Char('q') {
+    let b = stdin.next();
+    if let Some(Ok(b'q')) = b {
       return;
     }
   }
