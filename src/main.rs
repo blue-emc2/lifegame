@@ -5,9 +5,10 @@ use termion::async_stdin;
 use termion::raw::IntoRawMode;
 use termion::{clear, cursor};
 
-use std::io::{stdout, Write};
-
 use rand::Rng;
+use std::io::{stdout, Write};
+use std::thread;
+use std::time::Duration;
 
 fn main() {
   // Get and lock the stdios.
@@ -62,5 +63,7 @@ fn main() {
     if let Some(Ok(b'q')) = b {
       return;
     }
+
+    thread::sleep(Duration::from_millis(750));
   }
 }
