@@ -1,11 +1,13 @@
 extern crate termion;
 
-use termion::event::{Event, Key};
+use termion::event::Key;
 use termion::input::TermRead;
 use termion::raw::IntoRawMode;
 use termion::{clear, cursor};
 
 use std::io::{stdin, stdout, Write};
+
+use rand::Rng;
 
 fn main() {
   // Get and lock the stdios.
@@ -18,7 +20,7 @@ fn main() {
   let width: u16 = 16;
   let height: u16 = 16;
   let size = width * height;
-  let vec = vec!["■"; size as usize];
+  let vec = vec!["□"; size as usize];
   let mut x: u16;
   let mut y: u16;
 
@@ -36,6 +38,8 @@ fn main() {
 
   stdout.flush().unwrap();
 
+  let mut rng = rand::thread_rng();
+
   // game loop
   loop {
     // cell: 細胞
@@ -44,8 +48,9 @@ fn main() {
       y = (i / height) + 1;
 
       let mut print = cell;
-      if (x % 2) == 0 {
-        print = &"□";
+      let number = rng.gen_range(0, 10);
+      if (number % 2) == 0 {
+        print = &"■";
       }
 
       write!(stdout, "{}", cursor::Goto(x, y)).unwrap();
@@ -55,9 +60,8 @@ fn main() {
     stdout.flush().unwrap();
 
     let key = stdin.next().unwrap().unwrap();
-    match key {
-      Key::Char('q') => return,
-      _ => {}
+    if key == Key::Char('q') {
+      return;
     }
   }
 }
